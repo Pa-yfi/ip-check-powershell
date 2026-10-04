@@ -1,7 +1,8 @@
-# ip-check-powershell
+# Emergency connection report
 
+Run this script in PowerShell on the Iranian laptop. Administrator access is not required. It saves network settings and connection test results to `Connection-Emergency.txt` on the Desktop. It overwrites the previous report when run again.
 
-
+```powershell
 $report = Join-Path ([Environment]::GetFolderPath("Desktop")) "Connection-Emergency.txt"
 
 "Connection report — $(Get-Date -Format o)" |
@@ -23,6 +24,7 @@ Get-Service sshd -ErrorAction SilentlyContinue |
 "`n=== CONNECTION TESTS ===" | Add-Content $report
 
 $targets = @(
+    "46.28.69.207"
     "fsn1-speed.hetzner.com"
     "hel1-speed.hetzner.com"
     "ash-speed.hetzner.com"
@@ -73,3 +75,6 @@ foreach ($target in $targets) {
 }
 
 Write-Host "`nSaved: $report"
+```
+
+`TCP reachable` means the tested address accepted a connection on that port. It does not confirm SSH access. `No TCP connection` can mean filtering, a closed port, or a network problem. Provider test endpoints cannot be used as your SSH relay.
